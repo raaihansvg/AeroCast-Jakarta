@@ -88,7 +88,7 @@ def realtime():
                 "co": float(iaqi.get("co", {}).get("v", 10.0)),
                 "o3": float(iaqi.get("o3", {}).get("v", 42.0)),
                 "no2": float(iaqi.get("no2", {}).get("v", 16.0)),
-                "stasiun": stasiun,  # <-- pakai stasiun dari user
+                "stasiun": stasiun,  
                 "tahun": today.year,
                 "bulan": today.month,
                 "hari": today.day,
