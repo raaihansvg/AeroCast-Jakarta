@@ -1,8 +1,8 @@
-# 🌫️ AeroCast Jakarta
+# AeroCast Jakarta
 
 <div align="center">
 
-![AeroCast Jakarta](https://raw.githubusercontent.com/raaihansvg/AeroCast-Jakarta/main/bundaran-hi-graded.jpg)
+![AeroCast Jakarta](https://raw.githubusercontent.com/raaihansvg/AeroCast-Jakarta/main/demo.png)
 
 **Real-time Jakarta Air Quality Monitoring & ISPU Prediction**
 
@@ -16,32 +16,32 @@
 
 ---
 
-## 📌 Tentang Proyek
+## About
 
-**AeroCast Jakarta** adalah aplikasi web monitoring kualitas udara real-time untuk DKI Jakarta. Sistem ini memprediksi kategori **ISPU (Indeks Standar Pencemar Udara)** menggunakan model machine learning XGBoost yang dilatih dari data sensor 5 stasiun pemantau resmi DKI Jakarta, dengan data diambil langsung melalui WAQI API.
+**AeroCast Jakarta** is a real-time air quality monitoring web application for DKI Jakarta. The system predicts **ISPU (Indeks Standar Pencemar Udara)** categories using an XGBoost machine learning model trained on sensor data from 5 official DKI Jakarta monitoring stations, with live data fetched through the WAQI API.
 
-> Dikembangkan sebagai bagian dari kompetisi **AI For Real Impact 2026**.
-
----
-
-## ✨ Fitur Utama
-
-| Fitur | Deskripsi |
-|-------|-----------|
-| 🔴 **Real-time Monitoring** | Data langsung dari 5 stasiun pemantau DKI Jakarta via WAQI API |
-| 🤖 **Prediksi ISPU** | Klasifikasi kualitas udara menggunakan model XGBoost (21 fitur) |
-| 📊 **4 Kategori ISPU** | Baik · Sedang · Tidak Sehat · Sangat Tidak Sehat |
-| 🗺️ **5 Stasiun** | Bundaran HI · Kelapa Gading · Jagakarsa · Lubang Buaya · Kebon Jeruk |
-| 🎮 **Mode Simulasi** | Uji prediksi dengan input parameter manual |
-| 📱 **Responsive UI** | Desain modern berbasis dark editorial aesthetic |
+> Developed for the **AI For Real Impact 2026** competition.
 
 ---
 
-## 🏗️ Arsitektur
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| **Real-time Monitoring** | Live data from 5 DKI Jakarta monitoring stations via WAQI API |
+| **ISPU Prediction** | Air quality classification using XGBoost model with 21 features |
+| **4 ISPU Categories** | Good · Moderate · Unhealthy · Very Unhealthy |
+| **5 Stations** | Bundaran HI · Kelapa Gading · Jagakarsa · Lubang Buaya · Kebon Jeruk |
+| **Simulation Mode** | Test predictions with manual parameter input |
+| **Responsive UI** | Modern editorial-style interface |
+
+---
+
+## Architecture
 
 ```
 AeroCast-Jakarta/
-├── index.html              # Frontend utama
+├── index.html              # Main frontend
 ├── bundaran-hi-graded.jpg  # Hero image
 ├── src/
 │   ├── css/
@@ -54,25 +54,24 @@ AeroCast-Jakarta/
     └── requirements.txt    # Python dependencies
 ```
 
-### Alur Data
+**Data Flow**
 
 ```
-WAQI API → Flask Backend → XGBoost Model → Prediksi ISPU → Frontend
+WAQI API -> Flask Backend -> XGBoost Model -> ISPU Prediction -> Frontend
 ```
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 **Frontend**
 - HTML5, CSS3 (Vanilla)
 - JavaScript (ES6+)
-- Canvas API (animasi radar)
 
 **Backend**
 - Python 3.12
 - Flask (REST API)
-- XGBoost (model prediksi)
+- XGBoost
 - Pandas, NumPy, Scikit-learn
 
 **Data Source**
@@ -80,21 +79,21 @@ WAQI API → Flask Backend → XGBoost Model → Prediksi ISPU → Frontend
 
 ---
 
-## 🚀 Cara Menjalankan
+## Getting Started
 
 ### Prerequisites
 - Python 3.10+
 - pip
-- WAQI API Token (daftar gratis di [aqicn.org/data-platform/token](https://aqicn.org/data-platform/token))
+- WAQI API Token — register for free at [aqicn.org/data-platform/token](https://aqicn.org/data-platform/token)
 
-### 1. Clone Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/raaihansvg/AeroCast-Jakarta.git
 cd AeroCast-Jakarta
 ```
 
-### 2. Setup Backend
+### 2. Set Up the Backend
 
 ```bash
 cd backend
@@ -103,70 +102,69 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 3. Konfigurasi Environment
+### 3. Configure Environment
 
-Buat file `.env` di folder `backend/`:
+Create a `.env` file inside the `backend/` folder:
 
 ```env
 WAQI_TOKEN=your_waqi_api_token_here
 ```
 
-### 4. Jalankan Backend
+### 4. Run the Backend
 
 ```bash
 python app.py
-# Backend berjalan di http://localhost:5001
+# Backend running at http://localhost:5001
 ```
 
-### 5. Jalankan Frontend
+### 5. Run the Frontend
 
-Buka `index.html` langsung di browser, atau gunakan live server:
+Open `index.html` directly in a browser, or use a local server:
 
 ```bash
-# Menggunakan Python HTTP server
 python -m http.server 8080
-# Buka http://localhost:8080
+# Open http://localhost:8080
 ```
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
-| Method | Endpoint | Deskripsi |
-|--------|----------|-----------|
-| `GET` | `/api/realtime?station=DKI1` | Data real-time + prediksi ISPU |
-| `POST` | `/api/predict` | Prediksi dari input manual |
-| `GET` | `/api/ping` | Health check backend |
-
----
-
-## 🗺️ Stasiun Pemantau
-
-| ID | Lokasi | Wilayah |
-|----|--------|---------|
-| DKI1 | Bundaran HI | Jakarta Pusat |
-| DKI2 | Kelapa Gading | Jakarta Utara |
-| DKI3 | Jagakarsa | Jakarta Selatan |
-| DKI4 | Lubang Buaya | Jakarta Timur |
-| DKI5 | Kebon Jeruk | Jakarta Barat |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/realtime?station=DKI1` | Real-time data + ISPU prediction |
+| `POST` | `/api/predict` | Prediction from manual input |
+| `GET` | `/api/ping` | Backend health check |
 
 ---
 
-## 📊 Model Machine Learning
+## Monitoring Stations
 
-- **Algoritma:** XGBoost Classifier
-- **Fitur:** 21 parameter (PM2.5, PM10, SO₂, CO, O₃, NO₂, suhu, kelembaban, kecepatan angin, dll)
-- **Target:** 4 kategori ISPU (0=Baik, 1=Sedang, 2=Tidak Sehat, 3=Sangat Tidak Sehat)
-- **Data Training:** Historical ISPU DKI Jakarta
+| ID | Location | Region |
+|----|----------|--------|
+| DKI1 | Bundaran HI | Central Jakarta |
+| DKI2 | Kelapa Gading | North Jakarta |
+| DKI3 | Jagakarsa | South Jakarta |
+| DKI4 | Lubang Buaya | East Jakarta |
+| DKI5 | Kebon Jeruk | West Jakarta |
 
 ---
 
-## 📄 Lisensi
+## Machine Learning Model
 
-Didistribusikan di bawah [MIT License](LICENSE).
+- **Algorithm:** XGBoost Classifier
+- **Features:** 21 parameters (PM2.5, PM10, SO2, CO, O3, NO2, temperature, humidity, wind speed, etc.)
+- **Target:** 4 ISPU categories (0=Good, 1=Moderate, 2=Unhealthy, 3=Very Unhealthy)
+- **Training Data:** Historical ISPU data from DKI Jakarta
+
+---
+
+## License
+
+Distributed under the [MIT License](LICENSE).
 
 ---
 
 <div align="center">
-  <sub>Built with ❤️ for Jakarta · <a href="https://github.com/raaihansvg">raaihansvg</a></sub>
+  <sub>Built for Jakarta by <a href="https://github.com/raaihansvg">raaihansvg</a></sub>
 </div>
