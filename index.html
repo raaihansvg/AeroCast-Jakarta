@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AeroCast Jakarta — Air Quality Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="src/css/style.css"/>
+</head>
+<body>
+
+
+<header class="navbar" id="navbar">
+  <nav class="nav-inner">
+    <a class="nav-logo" href="#">
+      <span class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M5 10 Q10 5 15 10 Q10 15 5 10Z" fill="currentColor" opacity="0.7"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="logo-wordmark">AeroCast</span>
+    </a>
+
+    <div class="nav-pills">
+      <button class="npill active" data-tab="realtime" onclick="switchTab('realtime',this)">Real-time</button>
+      <button class="npill" data-tab="simulation" onclick="switchTab('simulation',this)">Simulasi</button>
+      <button class="npill" data-tab="about" onclick="switchTab('about',this)">Tentang</button>
+    </div>
+  </nav>
+</header>
+
+
+<section class="hero" id="heroSection">
+
+  <div class="hero-bg-photo" aria-hidden="true">
+    <img src="bundaran-hi-graded.jpg" alt="" class="hero-city-img"/>
+    <div class="hero-photo-overlay"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="badge-pulse"></span>
+        Jakarta Air Quality Monitor
+      </div>
+
+      <h1 class="hero-title">
+        AeroCast<br/>
+        <span class="title-sub">Jakarta</span>
+      </h1>
+      <p class="hero-tagline">Air Intelligence</p>
+
+      <p class="hero-desc">
+        Prediksi <strong>Indeks Standar Pencemar Udara</strong> secara real-time
+        berbasis model XGBoost — data sensor langsung dari 5 stasiun pemantau DKI Jakarta.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="scrollToApp(); switchTab('realtime', document.querySelector('.npill[data-tab=realtime]'))">
+          Mulai Pemantauan
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn-ghost" onclick="scrollToApp(); switchTab('simulation', document.querySelector('.npill[data-tab=simulation]'))">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M4 2l8 5-8 5V2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          Coba Simulasi
+        </button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hs-item">
+          <span class="hs-val" data-target="5">0</span>
+          <span class="hs-label">Stasiun</span>
+        </div>
+        <div class="hs-div"></div>
+        <div class="hs-item">
+          <span class="hs-val" data-target="4">0</span>
+          <span class="hs-label">Kategori</span>
+        </div>
+        <div class="hs-div"></div>
+        <div class="hs-item">
+          <span class="hs-val" data-target="21">0</span>
+          <span class="hs-label">Fitur</span>
+        </div>
+        <div class="hs-div"></div>
+        <div class="hs-item">
+          <span class="hs-val hs-text">XGB</span>
+          <span class="hs-label">Model</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ticker ticker-hero" aria-hidden="true">
+    <div class="ticker-track">
+      <span class="ti"><span class="td td-green"></span>PM10 · Partikulat Kasar</span>
+      <span class="ti"><span class="td td-green"></span>PM2.5 · Partikulat Halus</span>
+      <span class="ti"><span class="td td-amber"></span>SO₂ · Sulfur Dioksida</span>
+      <span class="ti"><span class="td td-amber"></span>CO · Karbon Monoksida</span>
+      <span class="ti"><span class="td td-red"></span>O₃ · Ozon Permukaan</span>
+      <span class="ti"><span class="td td-red"></span>NO₂ · Nitrogen Dioksida</span>
+      <span class="ti"><span class="td td-green"></span>PM10 · Partikulat Kasar</span>
+      <span class="ti"><span class="td td-green"></span>PM2.5 · Partikulat Halus</span>
+      <span class="ti"><span class="td td-amber"></span>SO₂ · Sulfur Dioksida</span>
+      <span class="ti"><span class="td td-amber"></span>CO · Karbon Monoksida</span>
+      <span class="ti"><span class="td td-red"></span>O₃ · Ozon Permukaan</span>
+      <span class="ti"><span class="td td-red"></span>NO₂ · Nitrogen Dioksida</span>
+    </div>
+  </div>
+</section>
+
+
+<section class="app-section" id="appSection">
+  <div class="app-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Panel Analisis</div>
+      <h2 class="section-title">Pilih Mode</h2>
+      <div class="section-tabs">
+        <button class="stab active" id="stab-realtime" onclick="switchTab('realtime',this)">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="currentColor" stroke-width="1.2"/><circle cx="7.5" cy="7.5" r="2.5" fill="currentColor"/></svg>
+          Real-time
+        </button>
+        <button class="stab" id="stab-simulation" onclick="switchTab('simulation',this)">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M12.5 7.5A5 5 0 1 1 2.5 7.5a5 5 0 0 1 10 0z" stroke="currentColor" stroke-width="1.2"/><path d="M7.5 5v2.5l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Simulasi
+        </button>
+        <button class="stab" id="stab-about" onclick="switchTab('about',this)">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7.5 6.5v5M7.5 4.5v.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Tentang
+        </button>
+      </div>
+    </div>
+
+    <div class="tab-panel active" id="tab-realtime">
+      <div class="rt-layout">
+        <div class="rt-left">
+          <div class="card">
+            <div class="card-eyebrow">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+              Stasiun Pemantau
+            </div>
+            <h3 class="card-title">Pilih Lokasi</h3>
+
+            <div class="station-grid">
+              <label class="scard" onclick="selectStation('DKI1', this)">
+                <input type="radio" name="rt_stasiun" value="DKI1" checked hidden/>
+                <div class="scard-top">
+                  <span class="scard-code">DKI1</span>
+                </div>
+                <div class="scard-name">Bundaran HI</div>
+                <div class="scard-area">Jakarta Pusat</div>
+                <div class="scard-check">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+              </label>
+              <label class="scard" onclick="selectStation('DKI2', this)">
+                <input type="radio" name="rt_stasiun" value="DKI2" hidden/>
+                <div class="scard-top">
+                  <span class="scard-code">DKI2</span>
+                </div>
+                <div class="scard-name">Kelapa Gading</div>
+                <div class="scard-area">Jakarta Utara</div>
+                <div class="scard-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+              </label>
+              <label class="scard" onclick="selectStation('DKI3', this)">
+                <input type="radio" name="rt_stasiun" value="DKI3" hidden/>
+                <div class="scard-top">
+                  <span class="scard-code">DKI3</span>
+                </div>
+                <div class="scard-name">Jagakarsa</div>
+                <div class="scard-area">Jakarta Selatan</div>
+                <div class="scard-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+              </label>
+              <label class="scard" onclick="selectStation('DKI4', this)">
+                <input type="radio" name="rt_stasiun" value="DKI4" hidden/>
+                <div class="scard-top">
+                  <span class="scard-code">DKI4</span>
+                </div>
+                <div class="scard-name">Lubang Buaya</div>
+                <div class="scard-area">Jakarta Timur</div>
+                <div class="scard-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+              </label>
+              <label class="scard" onclick="selectStation('DKI5', this)">
+                <input type="radio" name="rt_stasiun" value="DKI5" hidden/>
+                <div class="scard-top">
+                  <span class="scard-code">DKI5</span>
+                </div>
+                <div class="scard-name">Kebon Jeruk</div>
+                <div class="scard-area">Jakarta Barat</div>
+                <div class="scard-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+              </label>
+            </div>
+
+            <button class="btn-action" id="btnRealtime" onclick="fetchRealtime()">
+              <span class="btn-label">Ambil Data &amp; Prediksi</span>
+              <span class="btn-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="btn-spinner" id="rtSpinner"></span>
+            </button>
+          </div>
+
+          <div id="rtStatus"></div>
+
+          <div class="card" id="rtParamsCard" style="display:none">
+            <div class="card-eyebrow">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="4" width="11" height="7.5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4.5 4V3a2 2 0 0 1 4 0v1" stroke="currentColor" stroke-width="1.2"/></svg>
+              Sensor Aktif
+            </div>
+            <h3 class="card-title">Parameter Saat Ini</h3>
+            <div class="param-grid" id="rtParamsGrid"></div>
+          </div>
+        </div>
+
+        <div class="rt-right" id="rtResultCol">
+          <div class="result-placeholder">
+            <div class="rp-rings">
+              <div class="rp-ring rp-r1"></div>
+              <div class="rp-ring rp-r2"></div>
+              <div class="rp-ring rp-r3"></div>
+            </div>
+            <p class="rp-text">Pilih stasiun pemantau,<br/>lalu klik <strong>Ambil Data &amp; Prediksi</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div class="tab-panel" id="tab-simulation">
+
+      <div class="card preset-card">
+        <div class="card-eyebrow">Mulai Cepat</div>
+        <h3 class="card-title">Skenario Preset</h3>
+        <div class="preset-grid">
+          <button class="preset-btn" onclick="loadPreset('clean')">
+            <span class="pb-icon pb-green">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2 Q13 5 13 10 Q13 15 9 16 Q5 15 5 10 Q5 5 9 2Z" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M9 5v6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity="0.6"/></svg>
+            </span>
+            <span class="pb-name">Pasca Hujan</span>
+            <span class="pb-tag pb-tag-good">Baik</span>
+          </button>
+          <button class="preset-btn" onclick="loadPreset('moderate')">
+            <span class="pb-icon pb-amber">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M4 4l1.5 1.5M12.5 12.5l1.5 1.5M4 14l1.5-1.5M12.5 5.5l1.5-1.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+            </span>
+            <span class="pb-name">Hari Biasa</span>
+            <span class="pb-tag pb-tag-mod">Sedang</span>
+          </button>
+          <button class="preset-btn" onclick="loadPreset('dry')">
+            <span class="pb-icon pb-orange">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2.5 11 Q4.5 5.5 9 4.5 Q13.5 5.5 15.5 11" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M2.5 11h13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M6.5 11v3.5M9 11v3.5M11.5 11v3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/></svg>
+            </span>
+            <span class="pb-name">Kemarau</span>
+            <span class="pb-tag pb-tag-bad">Tdk Sehat</span>
+          </button>
+          <button class="preset-btn" onclick="loadPreset('extreme')">
+            <span class="pb-icon pb-purple">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3.5 L10.8 8 L15.5 8 L11.8 11 L13.5 16 L9 13 L4.5 16 L6.2 11 L2.5 8 L7.2 8 Z" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
+            </span>
+            <span class="pb-name">Ekstrem</span>
+            <span class="pb-tag pb-tag-haz">Sangat Berbahaya</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="sim-layout">
+        <div class="sim-left">
+          <div class="card">
+            <div class="card-eyebrow">Konsentrasi</div>
+            <h3 class="card-title">Polutan Udara</h3>
+            <div class="sliders-group">
+              <div class="field-wrap" id="f_pm10"></div>
+              <div class="field-wrap" id="f_pm25"></div>
+              <div class="field-wrap" id="f_so2"></div>
+              <div class="field-wrap" id="f_co"></div>
+              <div class="field-wrap" id="f_o3"></div>
+              <div class="field-wrap" id="f_no2"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-eyebrow">Atmosfer</div>
+            <h3 class="card-title">Kondisi Cuaca</h3>
+            <div class="sliders-group">
+              <div class="field-wrap" id="f_temp"></div>
+              <div class="field-wrap" id="f_humidity"></div>
+              <div class="field-wrap" id="f_wind"></div>
+              <div class="field-wrap" id="f_precip_sum"></div>
+              <div class="field-wrap" id="f_precip_hours"></div>
+              <div class="field-wrap" id="f_radiation"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-eyebrow">Tambahan</div>
+            <h3 class="card-title">Parameter Konteks</h3>
+            <div class="context-fields">
+              <div>
+                <label class="field-label-sm">Stasiun</label>
+                <select id="sim_stasiun" class="select-field">
+                  <option value="DKI1">DKI1 — Bundaran HI</option>
+                  <option value="DKI2">DKI2 — Kelapa Gading</option>
+                  <option value="DKI3">DKI3 — Jagakarsa</option>
+                  <option value="DKI4">DKI4 — Lb. Buaya</option>
+                  <option value="DKI5">DKI5 — Kb. Jeruk</option>
+                </select>
+              </div>
+              <div class="toggles-col">
+                <label class="toggle">
+                  <input type="checkbox" id="sim_weekend"/>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label">Akhir Pekan</span>
+                </label>
+                <label class="toggle">
+                  <input type="checkbox" id="sim_holiday"/>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label">Hari Libur</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sim-right">
+          <button class="btn-action btn-action-sim" id="btnSimulate" onclick="runSimulation()">
+            <span class="btn-label">Jalankan Prediksi</span>
+            <span class="btn-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5l9 5.5-9 5.5V2.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="btn-spinner" id="simSpinner"></span>
+          </button>
+          <div id="simStatus"></div>
+          <div id="simResultCol">
+            <div class="result-placeholder">
+              <div class="rp-rings">
+                <div class="rp-ring rp-r1"></div>
+                <div class="rp-ring rp-r2"></div>
+                <div class="rp-ring rp-r3"></div>
+              </div>
+              <p class="rp-text">Atur parameter di kiri,<br/>lalu klik <strong>Jalankan Prediksi</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-about">
+      <div class="about-layout">
+        <div class="about-sticky">
+          <p class="about-kicker">Tentang Proyek</p>
+          <h2 class="about-title">AeroCast<br/><em>Jakarta</em></h2>
+          <p class="about-desc">
+            Platform prediksi Indeks Standar Pencemar Udara (ISPU) untuk DKI Jakarta,
+            menggunakan model <strong>XGBoost Classifier</strong> yang dilatih dari data historis
+            multi-stasiun dikombinasikan dengan variabel cuaca real-time.
+          </p>
+          <div class="about-stats">
+            <div class="astat"><span class="astat-val">XGB</span><span class="astat-label">Model</span></div>
+            <div class="astat"><span class="astat-val">4</span><span class="astat-label">Kategori ISPU</span></div>
+            <div class="astat"><span class="astat-val">21</span><span class="astat-label">Fitur Input</span></div>
+            <div class="astat"><span class="astat-val">5</span><span class="astat-label">Stasiun</span></div>
+          </div>
+          <div class="tech-tags">
+            <span class="tech-tag">Python Flask</span>
+            <span class="tech-tag">XGBoost</span>
+            <span class="tech-tag">scikit-learn</span>
+            <span class="tech-tag">WAQI API</span>
+            <span class="tech-tag">pandas</span>
+            <span class="tech-tag">Open-Meteo</span>
+          </div>
+        </div>
+
+        <div class="about-cards">
+          <div class="card">
+            <div class="card-eyebrow">Klasifikasi ISPU</div>
+            <h3 class="card-title">4 Kategori Kualitas Udara</h3>
+            <div class="aqi-list">
+              <div class="aqi-row aqi-good">
+                <span class="aqi-dot"></span>
+                <div class="aqi-info"><strong>Baik</strong><span>0–50 · Aman untuk semua kalangan</span></div>
+                <span class="aqi-range">0–50</span>
+              </div>
+              <div class="aqi-row aqi-mod">
+                <span class="aqi-dot"></span>
+                <div class="aqi-info"><strong>Sedang</strong><span>51–100 · Kelompok sensitif waspada</span></div>
+                <span class="aqi-range">51–100</span>
+              </div>
+              <div class="aqi-row aqi-bad">
+                <span class="aqi-dot"></span>
+                <div class="aqi-info"><strong>Tidak Sehat</strong><span>101–199 · Kurangi aktivitas outdoor</span></div>
+                <span class="aqi-range">101–199</span>
+              </div>
+              <div class="aqi-row aqi-haz">
+                <span class="aqi-dot"></span>
+                <div class="aqi-info"><strong>Sangat Tidak Sehat</strong><span>200+ · Hindari semua outdoor</span></div>
+                <span class="aqi-range">200+</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-eyebrow">Parameter</div>
+            <h3 class="card-title">Jenis Polutan</h3>
+            <div class="pollutant-list">
+              <div class="pt-row"><span class="pt-tag">PM10</span><div><strong>Partikulat Kasar</strong><br/>Debu jalan, konstruksi, industri — masuk saluran napas atas</div></div>
+              <div class="pt-row"><span class="pt-tag">PM2.5</span><div><strong>Partikulat Halus</strong><br/>Emisi kendaraan — menembus jauh ke paru-paru dan aliran darah</div></div>
+              <div class="pt-row"><span class="pt-tag">SO₂</span><div><strong>Sulfur Dioksida</strong><br/>Pembakaran bahan bakar fosil — iritasi pernapasan &amp; hujan asam</div></div>
+              <div class="pt-row"><span class="pt-tag">CO</span><div><strong>Karbon Monoksida</strong><br/>Pembakaran tak sempurna — mengurangi kapasitas darah membawa O₂</div></div>
+              <div class="pt-row"><span class="pt-tag">O₃</span><div><strong>Ozon Permukaan</strong><br/>Reaksi fotokimia polutan + matahari — racun bagi paru-paru</div></div>
+              <div class="pt-row"><span class="pt-tag">NO₂</span><div><strong>Nitrogen Dioksida</strong><br/>Kendaraan &amp; industri suhu tinggi — pembentuk ozon &amp; hujan asam</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">AeroCast</div>
+    <div class="footer-copy">Jakarta Air Quality Intelligence · XGBoost Model · WAQI API</div>
+  </div>
+</footer>
+
+<script src="src/js/app.js"></script>
+</body>
+</html>
